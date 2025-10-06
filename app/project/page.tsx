@@ -7,13 +7,14 @@ async function getProducts() {
 
 export default async function ProductPage() {
   const products = await getProducts();
+  
   return (
     <main>
       <h1>Our Products</h1>
       <ul>
         {products.map((p) => (
-          <li key={p.id}>{p.name} - ${p.price}</li>
-        ))}
+          <li key={p.id}>{p.page_title}</li>
+        ))} 
       </ul>
     </main>
   );
