@@ -1,15 +1,18 @@
 import pool from "../../lib/db";
+import { RowDataPacket } from "mysql2";
 
-// Define your product type
 type Product = {
   id: number;
   page_title: string;
 };
 
 async function getProducts(): Promise<Product[]> {
-  // Use RowDataPacket[] and cast the result
-  const [rows] = await pool.query("SELECT id, page_title FROM pages") as unknown as Product[];
-  return rows;
+  // Tell TypeScript that 'rows' is an array of Product
+  const [rows] = await pool.query<RowDataPacket[]>(
+    "SELECT id, page_title FROM pages"
+  );
+
+  return rows as Product[];
 }
 
 export default async function ProductPage() {
