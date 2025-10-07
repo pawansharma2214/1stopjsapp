@@ -1,11 +1,11 @@
-import pool from '@/lib/db';
+import pool from '../../lib/db';
 
-export async function GET() {
+export default async function handler(req, res) {
   try {
-    const [rows] = await pool.query('SELECT NOW() as now');
-    return Response.json({ success: true, time: rows[0].now });
+    const [rows] = await pool.query('SELECT * FROM pages'); // replace with your table
+    res.status(200).json(rows);
   } catch (error) {
-    console.error('Database connection error:', error);
-    return Response.json({ success: false, error: error.message });
+    console.error(error);
+    res.status(500).json({ error: 'Database query failed' });
   }
 }
