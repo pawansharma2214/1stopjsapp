@@ -1,16 +1,12 @@
-import pool from '../../../lib/db.js';
+import pool from '../../../lib/db';
+import { NextResponse } from 'next/server';
 
-export async function GET(request) {
+export async function GET() {
   try {
-    const [rows] = await pool.query('SELECT * FROM pages'); // your table
-    return new Response(JSON.stringify(rows), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const [rows] = await pool.query('SELECT id, page_title FROM pages LIMIT 10');
+    return NextResponse.json({ success: true, data: rows });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    console.error('Database query error:', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
